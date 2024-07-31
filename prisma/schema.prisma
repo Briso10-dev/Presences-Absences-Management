@@ -12,3 +12,32 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+
+// Models
+// Employee table
+model Employee {
+  employeeID    String  @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  email String  @unique
+  password String
+  poste String
+  salary Int
+}
+// Presences table
+model Presence{
+  presenceID    String  @id @default(auto()) @map("_id") @db.ObjectId
+  date DateTime
+  startingHour DateTime
+  endingHour DateTime
+}
+// abscences table
+model Absence{
+  abscenceID    String  @id @default(auto()) @map("_id") @db.ObjectId
+  date DateTime
+  abscenceHour Int  
+}
+// notifications table
+model Notification{
+  notificationID    String  @id @default(auto()) @map("_id") @db.ObjectId
+  message String
+}

@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import { HttpCode } from "../core/constants";
 import { validationResult } from "express-validator";
-import chalk from "chalk";
 import sendError from "../core/constants/errors";
 import bcrypt from 'bcrypt'
 import tokenOps from "../core/config/jwt.function";
@@ -63,6 +62,38 @@ export const employeeControllers = {
             }) //refresh token stored in cookie
             console.log(accessToken)
             res.json({ msg: "User successfully logged in" }).status(HttpCode.OK)
+        } catch (error) {
+            sendError(res, error)
+        }
+    },
+    logoutUser: async (req: Request, res: Response) => {
+        try {
+
+            const { email } = req.body
+            //confirming first by email if user exists 
+            const employee = await prisma.employee.findFirst({
+                where: {
+                    email
+                }
+            })
+            if (!employee)
+                return res.status(HttpCode.NOT_FOUND).json({ msg: "employee not found" })
+
+            // obtaiining user's token
+            let accessToken = req.headers.authorization
+            console.log(accessToken)
+            const refreshToken = req.cookies['Haruna-cookie']
+            
+            // verifying if token exists
+            if (!accessToken || !refreshToken )
+                return res.status(HttpCode.UNAUTHORIZED).json({ message: "Unauthorized: No token available or expired" });
+
+            const decodedUser = tokenOps.verifyAccessToken(accessToken);
+            if (!decodedUser)
+                return res.status(HttpCode.UNPROCESSABLE_ENTITY).json({ msg: "Invalid or expired token" })
+            accessToken = "" 
+            res.clearCookie('Harunaa-cookie')
+            return res.status(HttpCode.OK).json({ msg: "User succesffully logout" })
         } catch (error) {
             sendError(res, error)
         }

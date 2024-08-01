@@ -7,3 +7,4 @@ export const routeEmployee = Router()
 // Routes API-REST creation
 routeEmployee.post("/",employeeValidator,employeeControllers.createEmployee)
 routeEmployee.post("/login",employeeControllers.loginUser)
+routeEmployee.post("/logout",employeeControllers.logoutUser)

@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// Models
+// Employee table
+model Employee {
+  employeeID    String  @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  email String  @unique
+  password String
+  poste String
+  salary Int
+   // A user can have zero/many presence
+  presence Presence[]
+  // A user can have zero/many abscences
+  abscences Absence[]
+  // A user receives zero/many notifications
+  notification Notification[]
+}
+// Presences table
+model Presence{
+  presenceID    String  @id @default(auto()) @map("_id") @db.ObjectId
+  date DateTime
+  startingHour DateTime
+  endingHour DateTime
+  // A presence concerns one employee
+  empPresenceID String @db.ObjectId
+  empPresence Employee @relation(fields: [empPresenceID],references: [employeeID])
+}
+// abscences table
+model Absence{
+  abscenceID    String  @id @default(auto()) @map("_id") @db.ObjectId
+  date DateTime
+  abscenceHour Int
+  // An absence concerns one employee
+  empAbsenceID String @db.ObjectId
+  empAbsence Employee @relation(fields: [empAbsenceID],references: [employeeID])  
+}
+// notifications table
+model Notification{
+  notificationID    String  @id @default(auto()) @map("_id") @db.ObjectId
+  message String
+  // A notification concerns one employee
+  empNotifID String @db.ObjectId
+  empNotif Employee @relation(fields: [empNotifID],references: [employeeID])  
+}

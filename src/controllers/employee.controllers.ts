@@ -36,7 +36,7 @@ export const employeeControllers = {
             sendError(res, error)
         }
     },
-    loginUser: async (req: Request, res: Response) => {
+    loginEmployee: async (req: Request, res: Response) => {
         try {
 
             const { email, password } = req.body
@@ -66,7 +66,7 @@ export const employeeControllers = {
             sendError(res, error)
         }
     },
-    logoutUser: async (req: Request, res: Response) => {
+    logoutEmployee: async (req: Request, res: Response) => {
         try {
 
             const { email } = req.body
@@ -83,23 +83,23 @@ export const employeeControllers = {
             let accessToken = req.headers.authorization
             console.log(accessToken)
             const refreshToken = req.cookies['Haruna-cookie']
-            
+
             // verifying if token exists
-            if (!accessToken || !refreshToken )
+            if (!accessToken || !refreshToken)
                 return res.status(HttpCode.UNAUTHORIZED).json({ message: "Unauthorized: No token available or expired" });
 
             const decodedUser = tokenOps.verifyAccessToken(accessToken);
             if (!decodedUser)
                 return res.status(HttpCode.UNPROCESSABLE_ENTITY).json({ msg: "Invalid or expired token" })
-            accessToken = "" 
+            accessToken = ""
             res.clearCookie('Harunaa-cookie')
             return res.status(HttpCode.OK).json({ msg: "User succesffully logout" })
         } catch (error) {
             sendError(res, error)
         }
     },
-     // get user profile
-     getEmployee: async (req: Request, res: Response) => {
+    // get user profile
+    getEmployee: async (req: Request, res: Response) => {
         try {
             const { id } = req.params
             const empProfile = await prisma.employee.findUnique({
@@ -109,8 +109,34 @@ export const employeeControllers = {
             })
             if (!empProfile)
                 return res.status(HttpCode.NOT_FOUND).json({ msg: "User info's failed retrieval" })
-            return res.status(HttpCode.OK).json(empProfile)        
+            return res.status(HttpCode.OK).json(empProfile)
 
+        } catch (error) {
+            sendError(res, error)
+        }
+    },
+    updateEmployee: async (req: Request, res: Response) => {
+        try {
+            const { id } = req.params //obtaining a user's id
+            const { name, email, password,poste,salary } = req.body //obtaining modified users's info
+
+            const passHash = await bcrypt.hash(password, 10)
+
+            const updateUser = await prisma.employee.update({
+                where: {
+                    employeeID: id
+                },
+                data: {
+                    name,
+                    email,
+                    password: passHash,
+                    poste,
+                    salary
+                }
+            })
+            if (!updateUser)
+                return res.status(HttpCode.BAD_REQUEST).json({ msg: "enterd correct infos" })
+            res.status(HttpCode.OK).json(updateUser)
         } catch (error) {
             sendError(res, error)
         }

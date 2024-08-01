@@ -2,9 +2,10 @@ import { Request,Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import { HttpCode } from "../core/constants";
 import { validationResult } from "express-validator";
+import chalk from "chalk";
 import sendError from "../core/constants/errors";
 import bcrypt from 'bcrypt'
-
+import tokenOps from "../core/config/jwt.function";
 
 const prisma = new PrismaClient()
 
@@ -29,11 +30,42 @@ export const employeeControllers = {
                 }
             })
             if(!employee)
-                return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({msg:"COuld not create EMployee"})
+                return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({msg:"Could not create EMployee"})
             return res.status(HttpCode.OK).json({msg:`${employee.name} successfully created`})
 
         } catch (error) {
             sendError(res,error)
         }
-    }
+    },
+    loginUser: async (req:Request, res: Response) => {
+        try {
+        
+            const { email, password } = req.body
+
+            const employee = await prisma.employee.findUnique({
+                where: {
+                    email
+                },
+            })
+            if (employee) {
+                const testPass = await bcrypt.compare(password, employee.password)
+                if (testPass) {
+                    // jwt token generation
+                    const accessToken = tokenOps.generateAccessToken(employee)
+                    const refreshToken = tokenOps.generateRefreshToken(employee)
+                    employee.password = " "
+                    res.cookie(`${employee.name}-cookie`, refreshToken, { 
+                    httpOnly: true, 
+                    secure: true,
+                    maxAge : 30 * 24 * 60 * 1000
+                     }) //refresh token stored in cookie
+                    console.log(accessToken)
+                    res.json({ msg: "User successfully logged in" }).status(HttpCode.OK)
+                } else res.json({ msg: "Invalid infos enterd" })
+            } else console.log(chalk.red("No user found"))
+
+        } catch (error) {
+            sendError(res, error)
+        }
+    },
 }

@@ -98,4 +98,21 @@ export const employeeControllers = {
             sendError(res, error)
         }
     },
+     // get user profile
+     getEmployee: async (req: Request, res: Response) => {
+        try {
+            const { id } = req.params
+            const empProfile = await prisma.employee.findUnique({
+                where: {
+                    employeeID: id
+                }
+            })
+            if (!empProfile)
+                return res.status(HttpCode.NOT_FOUND).json({ msg: "User info's failed retrieval" })
+            return res.status(HttpCode.OK).json(empProfile)        
+
+        } catch (error) {
+            sendError(res, error)
+        }
+    },
 }

@@ -9,3 +9,7 @@ export const employeeValidator = [
   body('poste', 'poste does not Empty').not().isEmpty(),
   body('salary',  'salary does not Empty').not().isEmpty(),
 ]
+export const presenceValidator = [
+  body('startingHour', 'Invalid does not Empty').not().isEmpty(),
+  body('startingHour', 'Invalid DateTime format').toDate(),
+]

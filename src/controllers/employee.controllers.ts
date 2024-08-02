@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import prisma from "../core/config/prisma";
 import { HttpCode } from "../core/constants";
 import { validationResult } from "express-validator";
 import sendError from "../core/constants/errors";
 import bcrypt from 'bcrypt'
 import tokenOps from "../core/config/jwt.function";
 
-const prisma = new PrismaClient()
+
 
 export const employeeControllers = {
     createEmployee: async (req: Request, res: Response) => {

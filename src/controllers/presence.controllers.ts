@@ -1,0 +1,39 @@
+import { Request,Response } from "express";
+import prisma from "../core/config/prisma";
+import { HttpCode } from "../core/constants";
+import sendError from "../core/constants/errors";
+
+export const presenceControllers = {
+    //mark user presence
+    startPresence : async (req:Request,res:Response)=>{
+        try {
+            //presence mark with his userID
+            const {startingHour} = req.body
+            const {id} = req.params
+            const date = new Date(Date.now())
+            
+            // veryfing first if employeeID exists
+            const employee = await prisma.employee.findUnique({
+                where:{
+                    employeeID : id
+                }
+            })
+            if(!employee)
+                return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({msg:"userID not found"})
+            // Theen starts marking its presence
+            const presence = await prisma.presence.create({
+                data:{
+                    date,
+                    startingHour,
+                    empPresenceID : employee.employeeID,
+                    //no ending hour yet
+                }
+            })
+            if(!presence)
+                return res.status(HttpCode.INTERNAL_SERVER_ERROR).json({msg:`The ${startingHour} or${employee.employeeID} entered is not correct`})
+            return res.status(HttpCode.OK).json(presence)
+        } catch (error) {
+            sendError(res,error)        
+        }
+    }
+}   

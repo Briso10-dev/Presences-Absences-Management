@@ -44,13 +44,18 @@ export const presenceControllers = {
     },
     endPresence: async (req: Request, res: Response) => {
         try {
+            // Check for validation errors
+            const errors = validationResult(req);
+            if (!errors.isEmpty())
+                return res.status(HttpCode.UNPROCESSABLE_ENTITY).json({ errors: errors.array() });
+
             const { id } = req.params
             const { endingHour } = req.body
 
             // marking endinHour by just updating the presence model
             const attendance = await prisma.presence.update({
                 where: {
-                    presenceID : id
+                    presenceID: id
                 },
                 data: {
                     endingHour

@@ -1,5 +1,5 @@
 import {body} from 'express-validator'
-//verifying non empty users fields
+//verifying non empty employee fields
 export const employeeValidator = [
   body('name', 'Invalid does not Empty').not().isEmpty(),
   body('email','Inavalid does not Empty').not().isEmpty(),
@@ -9,7 +9,13 @@ export const employeeValidator = [
   body('poste', 'poste does not Empty').not().isEmpty(),
   body('salary',  'salary does not Empty').not().isEmpty(),
 ]
-export const presenceValidator = [
+// verifying non-empy starting hour
+export const presenceStartValidator = [
   body('startingHour', 'Invalid does not Empty').not().isEmpty(),
   body('startingHour', 'Invalid DateTime format').toDate(),
+]
+// verifying non-empty ending hour
+export const presenceEndValidator = [
+  body('endingHour', 'Invalid does not Empty').not().isEmpty(),
+  body('endingHour', 'Invalid DateTime format').toDate(),
 ]

@@ -33,7 +33,7 @@ cd ts-starter
 yarn install
 ```
 
-### Exécution en mode développement
+### Execution in development mode
 
 To start the development server with automatic restarts on file changes, use:
 
@@ -41,7 +41,7 @@ To start the development server with automatic restarts on file changes, use:
 yarn dev
 ```
 
-### Compilation du projet
+### Project Compilation
 
 To compile the project for production, use:
 
@@ -49,7 +49,7 @@ To compile the project for production, use:
 yarn build
 ```
 
-### Démarrage de l'application
+### Starting of application
 
 To start the application after compilation, use:
 
@@ -63,7 +63,7 @@ yarn start
 - **build** :  Cleans the dist folder and compiles TypeScript code
 - **start** : Runs the compiled JavaScript code from the dist folder
 
-## Utilisation
+## Utilization
 
 
 Starting the Server
@@ -83,15 +83,15 @@ http://localhost:3000/api-docs
 
 ## License
 
-This project is licensed under WORKETYAMO.
+This exercice is licensed under WORKETYAMO.
 
-## Contribution
+## Contributions
 
 Contributions are welcome! Please open an issue or submit a pull request.
 
-## Auteur
+## Autors
 
-@Briso
+@Briso10-dev
 
 ## Additional Informations
 

@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import prisma from "../core/config/prisma";
 import { HttpCode } from "../core/constants";
 import { validationResult } from "express-validator";
 import sendError from "../core/constants/errors";
 import bcrypt from 'bcrypt'
 import tokenOps from "../core/config/jwt.function";
 
-const prisma = new PrismaClient()
+
 
 export const employeeControllers = {
     createEmployee: async (req: Request, res: Response) => {
@@ -137,6 +137,23 @@ export const employeeControllers = {
             if (!updateUser)
                 return res.status(HttpCode.BAD_REQUEST).json({ msg: "enterd correct infos" })
             res.status(HttpCode.OK).json(updateUser)
+        } catch (error) {
+            sendError(res, error)
+        }
+    },
+     // deletion of a user's profile
+     deleteEmployee: async (req: Request, res: Response) => {
+        try {
+            const { id } = req.params
+
+            const deleteUser = await prisma.employee.delete({
+                where: {
+                    employeeID: id
+                },
+            })
+            if (!deleteUser)
+                return res.status(HttpCode.NOT_FOUND).json({ msg: "could not delete user" })
+            return res.status(HttpCode.OK).json({msg:"employee successfully deleted"})
         } catch (error) {
             sendError(res, error)
         }

@@ -6,7 +6,7 @@ import { validationResult } from "express-validator";
 
 export const presenceControllers = {
     //mark user presence
-    startPresence: async (req: Request, res: Response) => {
+    startAttendance: async (req: Request, res: Response) => {
         try {
             // Check for validation errors
             const errors = validationResult(req);
@@ -42,7 +42,7 @@ export const presenceControllers = {
             sendError(res, error)
         }
     },
-    endPresence: async (req: Request, res: Response) => {
+    endAttendance: async (req: Request, res: Response) => {
         try {
             // Check for validation errors
             const errors = validationResult(req);
@@ -65,6 +65,22 @@ export const presenceControllers = {
                 return res.status(HttpCode.NOT_FOUND).json({ msg: "You did not mark your starting hour" })
             return res.status(HttpCode.OK).json(attendance)
 
+        } catch (error) {
+            sendError(res, error)
+        }
+    },
+    getAttendance: async (req: Request, res: Response) => {
+        try {
+            const attendances = await prisma.presence.findMany({
+                select: {
+                    empPresenceID: true,
+                    startingHour: true,
+                    endingHour: true
+                }
+            })
+            if (!attendances)
+                return res.status(HttpCode.NOT_FOUND).json({ msg: "no records presence of employees" })
+            return res.status(HttpCode.OK).json(attendances)
         } catch (error) {
             sendError(res, error)
         }

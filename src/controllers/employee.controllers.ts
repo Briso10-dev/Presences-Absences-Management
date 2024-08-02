@@ -141,4 +141,21 @@ export const employeeControllers = {
             sendError(res, error)
         }
     },
+     // deletion of a user's profile
+     deleteEmployee: async (req: Request, res: Response) => {
+        try {
+            const { id } = req.params
+
+            const deleteUser = await prisma.employee.delete({
+                where: {
+                    employeeID: id
+                },
+            })
+            if (!deleteUser)
+                return res.status(HttpCode.NOT_FOUND).json({ msg: "could not delete user" })
+            return res.status(HttpCode.OK).json({msg:"employee successfully deleted"})
+        } catch (error) {
+            sendError(res, error)
+        }
+    },
 }

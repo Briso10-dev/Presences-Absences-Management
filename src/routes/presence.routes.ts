@@ -7,3 +7,4 @@ export const presenceRouter = Router()
 
 // // Routes API-REST creations
 presenceRouter.post("/check-in/:id",presenceValidator,presenceControllers.startPresence)
+presenceRouter.post("/check-out/:id",presenceControllers.endPresence)

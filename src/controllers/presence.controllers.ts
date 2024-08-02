@@ -41,5 +41,27 @@ export const presenceControllers = {
         } catch (error) {
             sendError(res, error)
         }
+    },
+    endPresence: async (req: Request, res: Response) => {
+        try {
+            const { id } = req.params
+            const { endingHour } = req.body
+
+            // marking endinHour by just updating the presence model
+            const attendance = await prisma.presence.update({
+                where: {
+                    presenceID : id
+                },
+                data: {
+                    endingHour
+                }
+            })
+            if (!attendance)
+                return res.status(HttpCode.NOT_FOUND).json({ msg: "You did not mark your starting hour" })
+            return res.status(HttpCode.OK).json(attendance)
+
+        } catch (error) {
+            sendError(res, error)
+        }
     }
 }   

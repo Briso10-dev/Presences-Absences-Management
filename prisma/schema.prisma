@@ -34,7 +34,7 @@ model Presence{
   presenceID    String  @id @default(auto()) @map("_id") @db.ObjectId
   date DateTime
   startingHour DateTime
-  endingHour DateTime?
+  endingHour DateTime
   // A presence concerns one employee
   empPresenceID String @db.ObjectId
   empPresence Employee @relation(fields: [empPresenceID],references: [employeeID])
@@ -43,7 +43,7 @@ model Presence{
 model Absence{
   abscenceID    String  @id @default(auto()) @map("_id") @db.ObjectId
   date DateTime
-  abscenceHour Int
+  absenceHour Int 
   // An absence concerns one employee
   empAbsenceID String @db.ObjectId
   empAbsence Employee @relation(fields: [empAbsenceID],references: [employeeID])  

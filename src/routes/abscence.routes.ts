@@ -1,9 +1,8 @@
 import { Router } from "express";
-import { abscenceControllers } from "../controllers/presence.controllers";
-import { presenceStartValidator } from "../middleware/employee.middleware";
-import { presenceEndValidator } from "../middleware/employee.middleware";
+import { absenceControllers } from "../controllers/abscence.controllers";
+import { absenceMiddleware } from "../middleware/abscenceHours.middleware";
 
-export const abscenceRouter = Router()
+export const absenceRouter = Router()
 
 // // Routes API-REST creations
-abscenceRouter.get("/",)
+absenceRouter.get("/:id",absenceMiddleware.fillAbsences,absenceControllers.getAbscences)

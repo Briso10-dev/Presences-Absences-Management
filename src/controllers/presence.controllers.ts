@@ -31,8 +31,7 @@ export const presenceControllers = {
                 data: {
                     date,
                     startingHour,
-                    empPresenceID: employee.employeeID,
-                    endingHour : ""                     //no ending hour yet
+                    empPresenceID: employee.employeeID,                     //no ending hour yet
                 }
             })
             if (!presence)

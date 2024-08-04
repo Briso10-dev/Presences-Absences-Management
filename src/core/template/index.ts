@@ -3,16 +3,11 @@ import ejs from "ejs";
 import path from "path";
 
 const EmailTemplate = {
-  EMployeeNotif: async (
-    userName: string,
-    bookTitle: string,
-    returnDate: string
-  ) => {
+  employeePresence: async (employeeName: string,message : string) => {
     try {
-      const html = await ejs.renderFile(path.join(__dirname, "employee.ejs"), {
-        userName,
-        bookTitle,
-        returnDate
+      const html = await ejs.renderFile(path.join(__dirname, "presence.ejs"), {
+        employeeName,
+        message
       });
       return html;
     } catch (error) {
@@ -20,14 +15,35 @@ const EmailTemplate = {
       return "";
     }
   },
-  adminNotif: async (
-    userName: string,
-    bookTitle: string
-  ) => {
+  employeeAbsence: async (employeeName: string,message : string) => {
+    try {
+      const html = await ejs.renderFile(path.join(__dirname, "absence.ejs"), {
+        employeeName,
+        message
+      });
+      return html;
+    } catch (error) {
+      console.error("Error rendering Reminder template:", error);
+      return "";
+    }
+  },
+  employeeSalary: async (employeeName: string,message : string) => {
+    try {
+      const html = await ejs.renderFile(path.join(__dirname, "salary.ejs"), {
+        employeeName,
+        message
+      });
+      return html;
+    } catch (error) {
+      console.error("Error rendering Reminder template:", error);
+      return "";
+    }
+  },
+  adminNotif: async (adminName: string,message: string) => {
     try {
       const html = await ejs.renderFile(path.join(__dirname, "admin.ejs"), {
-        userName,
-        bookTitle
+        adminName,
+        message
       });
       return html;
     } catch (error) {

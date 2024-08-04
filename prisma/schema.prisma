@@ -43,7 +43,7 @@ model Presence{
 model Absence{
   absenceID    String  @id @default(auto()) @map("_id") @db.ObjectId
   date DateTime
-  absenceHour Int 
+  absenceHour Int @default(0)
   // An absence concerns one employee
   empAbsenceID String @db.ObjectId
   empAbsence Employee @relation(fields: [empAbsenceID],references: [employeeID])  
@@ -55,4 +55,15 @@ model Notification{
   // A notification concerns one employee
   empNotifID String @db.ObjectId
   empNotif Employee @relation(fields: [empNotifID],references: [employeeID])  
+}
+model Report{
+  reportID  String  @id @default(auto()) @map("_id") @db.ObjectId
+  content String
+  periode Periodicity
+}
+
+// enum list
+enum Periodicity{
+  weekly
+  monthly
 }

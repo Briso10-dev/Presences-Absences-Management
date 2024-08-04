@@ -25,14 +25,14 @@ export const absenceControllers = {
             sendError(res,error)
         }
     },
-    salaryAdjustment: async (req:Request,res:Response)=>{
+    getsalaryAdjustment: async (req:Request,res:Response)=>{
         try {
             const {id} = req.params
             //retrieving absenceHour of the employee
             const absence = await prisma.absence.findFirst({
                 select:{
                     absenceHour : true,
-                    empAbsence : true
+                    date : true
                 },
                 where:{
                     empAbsenceID : id
@@ -40,23 +40,6 @@ export const absenceControllers = {
             })
             if(!absence)
                 return res.status(HttpCode.OK).json({msg:"no salary adjustment"})
-            //retrieving  his previos salary and absenceHOurs
-             const empSalary = absence.empAbsence.salary
-             const absenceHours = absence.absenceHour
-            //adjusting a new salary
-            const newSalary = empSalary/absenceHours
-
-            //updating now employee's salary
-            const updateEmployee = await prisma.employee.update({
-                where:{
-                    employeeID: id
-                },
-                data:{
-                    salary:newSalary
-                }
-            })
-            if(!updateEmployee)
-                res.status(HttpCode.INTERNAL_SERVER_ERROR).json({msg:"you are not register here"})
             res.status(HttpCode.OK).json({msg:"You had a salary adjustment"})
         } catch (error) {
             sendError(res,error)

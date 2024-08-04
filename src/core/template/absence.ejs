@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Employee's Absence Notification</title>
+		<style>
+			/* style default configurations */
+			*{
+				padding: 0;
+				border:0;
+				margin: 0;
+			}
+			body {
+				font-family: Arial, sans-serif;
+				line-height: 1.6;
+				color: #333;
+				overflow-x: none;
+			}
+			.container {
+				width: 100%;
+				max-width: 600px;
+				margin: 0 auto;
+				padding: 20px;
+			}
+			.header {
+				background-color: #003cff96;
+				color: white;
+				padding: 10px;
+				text-align: center;
+			}
+			.content {
+				padding: 20px;
+				background-color: #f9f9f9;
+			}
+			.footer {
+				text-align: center;
+				margin-top: 20px;
+				font-size: 15px;
+				color: #888;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="header">
+				<h1>Absence Notification</h1>
+			</div>
+			<div class="content">
+				<p>Dear <%= employeeName %>,</p>
+				<p>bad news!, <%= message %> on <strong><%= date %></strong>.</p>
+				<p>So as you are absent like that, ust note that <strong>your salary will get modified</strong></p>
+				<br><br><br>
+				<p>We hope you enjoy your read!</p>
+			</div>
+			<div class="footer">
+				<p>This is an automated message. Please do not reply to this email.</p>
+			</div>
+		</div>
+	</body>
+</html>

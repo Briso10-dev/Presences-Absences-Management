@@ -5,4 +5,5 @@ import { absenceMiddleware } from "../middleware/abscenceHours.middleware";
 export const absenceRouter = Router()
 
 // // Routes API-REST creations
-absenceRouter.get("/:id",absenceMiddleware.fillAbsences,absenceControllers.getAbscences)
+absenceRouter.get("/attendance/absences/:id",absenceMiddleware.fillAbsences,absenceControllers.getAbscences)
+absenceRouter.get("/salary/:id",absenceControllers.salaryAdjustment)

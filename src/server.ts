@@ -29,7 +29,7 @@ app.use(cookieParser())
 // routes middleware
 app.use("/employees",routeEmployee)
 app.use("/attendance",presenceRouter) 
-app.use("/attendance/absences",absenceRouter)
+app.use("/",absenceRouter)
 
 setupSwagger(app);
 export default app;

@@ -11,7 +11,7 @@ import { presenceRouter } from './routes/presence.routes';
 import { absenceRouter } from './routes/abscence.routes';
 import routerReport from './routes/report.routes';
 import cookieParser from 'cookie-parser';
-
+import routerNotif from './routes/notification.routes';
 
 const app = express();
 app.use(express.json());
@@ -32,6 +32,7 @@ app.use("/employees",routeEmployee)
 app.use("/attendance",presenceRouter) 
 app.use("/",absenceRouter)
 app.use("/reports",routerReport)
+app.use("/notifications",routerNotif)
 
 setupSwagger(app);
 export default app;

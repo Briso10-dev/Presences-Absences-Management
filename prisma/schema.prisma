@@ -62,8 +62,8 @@ model Notification{
   empNotifID String @db.ObjectId
   empNotif Employee @relation(fields: [empNotifID],references: [employeeID])
   // A notification concerns the only direction there
-  dirNotifID String @db.ObjectId
-  dirNotif Direction @relation(fields: [dirNotifID],references: [directionID])    
+  adminNotifID String @db.ObjectId
+  adminNotif Administration @relation(fields: [adminNotifID],references: [adminID])    
 }
 // model report to actually having employee's info
 model Report{
@@ -76,10 +76,10 @@ model Report{
   absences Absence[]
 }
 // model direction pour l'envoie du mail
-model Direction{
-  directionID String  @id @default(auto()) @map("_id") @db.ObjectId
-  dirName String
-  numDirection Int
+model Administration{
+  adminID String  @id @default(auto()) @map("_id") @db.ObjectId
+  ddminName String
+  numAdmin Int
   // A Direction receives zero/many notifications
   notification Notification[]
 }

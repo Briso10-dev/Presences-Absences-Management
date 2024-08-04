@@ -31,8 +31,7 @@ export const presenceControllers = {
                 data: {
                     date,
                     startingHour,
-                    empPresenceID: employee.employeeID,
-                    //no ending hour yet
+                    empPresenceID: employee.employeeID,                     //no ending hour yet
                 }
             })
             if (!presence)
@@ -60,12 +59,11 @@ export const presenceControllers = {
                 data: {
                     endingHour
                 }
-            })
-            if (!attendance)
-                return res.status(HttpCode.NOT_FOUND).json({ msg: "You did not mark your starting hour" })
+            }) //verifying actually if the employee came
+            if (!attendance )
+                return res.status(HttpCode.NOT_FOUND).json({ msg: "You did not even border to come" })
             return res.status(HttpCode.OK).json(attendance)
-
-        } catch (error) {
+        }catch (error) {
             sendError(res, error)
         }
     },

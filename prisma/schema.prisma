@@ -60,8 +60,12 @@ model Notification{
   message String
   // A notification concerns one employee
   empNotifID String @db.ObjectId
-  empNotif Employee @relation(fields: [empNotifID],references: [employeeID])  
+  empNotif Employee @relation(fields: [empNotifID],references: [employeeID])
+  // A notification concerns the only direction there
+  dirNotifID String @db.ObjectId
+  dirNotif Direction @relation(fields: [dirNotifID],references: [directionID])    
 }
+// model report to actually having employee's info
 model Report{
   reportID  String  @id @default(auto()) @map("_id") @db.ObjectId
   content String
@@ -70,6 +74,14 @@ model Report{
   attendances Presence[]
   //A report is on zero/many employees's absence
   absences Absence[]
+}
+// model direction pour l'envoie du mail
+model Direction{
+  directionID String  @id @default(auto()) @map("_id") @db.ObjectId
+  dirName String
+  numDirection Int
+  // A Direction receives zero/many notifications
+  notification Notification[]
 }
 
 // enum list

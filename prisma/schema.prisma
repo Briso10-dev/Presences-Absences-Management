@@ -22,11 +22,11 @@ model Employee {
   password String
   poste String
   salary Int
-   // A user can have zero/many presence
+   // An employee can have zero/many presence
   presence Presence[]
-  // A user can have zero/many abscences
+  // Am employee can have zero/many abscences
   abscences Absence[]
-  // A user receives zero/many notifications
+  // An employee receives zero/many notifications
   notification Notification[]
 }
 // Presences table
@@ -38,6 +38,9 @@ model Presence{
   // A presence concerns one employee
   empPresenceID String @db.ObjectId
   empPresence Employee @relation(fields: [empPresenceID],references: [employeeID])
+  //An employee's presence is concern with just one report(after a period gets another one)
+  repPresenceID String @db.ObjectId
+  repPresence Report @relation(fields: [repPresenceID],references: [reportID]) 
 }
 // abscences table
 model Absence{
@@ -46,7 +49,10 @@ model Absence{
   absenceHour Int @default(0)
   // An absence concerns one employee
   empAbsenceID String @db.ObjectId
-  empAbsence Employee @relation(fields: [empAbsenceID],references: [employeeID])  
+  empAbsence Employee @relation(fields: [empAbsenceID],references: [employeeID])
+  //An employee's absence is concern with just one report(after a period gets another one)
+  repAbsenceID String @db.ObjectId
+  repAbsence Report @relation(fields: [repAbsenceID],references: [reportID])   
 }
 // notifications table
 model Notification{
@@ -59,7 +65,11 @@ model Notification{
 model Report{
   reportID  String  @id @default(auto()) @map("_id") @db.ObjectId
   content String
-  periode Periodicity
+  period Periodicity
+  //A report is on zero/many employees's presence
+  attendances Presence[]
+  //A report is on zero/many employees's absence
+  absences Absence[]
 }
 
 // enum list

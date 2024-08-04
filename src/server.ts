@@ -9,6 +9,7 @@ import { ONE_HUNDRED, SIXTY } from './core/constants';
 import { routeEmployee } from './routes/employee.routes';
 import { presenceRouter } from './routes/presence.routes';
 import { absenceRouter } from './routes/abscence.routes';
+import routerReport from './routes/report.routes';
 import cookieParser from 'cookie-parser';
 
 
@@ -30,6 +31,7 @@ app.use(cookieParser())
 app.use("/employees",routeEmployee)
 app.use("/attendance",presenceRouter) 
 app.use("/",absenceRouter)
+app.use("/reports",routerReport)
 
 setupSwagger(app);
 export default app;

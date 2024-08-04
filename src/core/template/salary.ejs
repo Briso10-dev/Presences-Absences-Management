@@ -3,12 +3,13 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Employee presence,absence and salary adjustment </title>
+		<title>Employee's Salary Notification</title>
 		<style>
 			body {
 				font-family: Arial, sans-serif;
 				line-height: 1.6;
 				color: #333;
+				overflow-x: none;
 			}
 			.container {
 				width: 100%;
@@ -41,11 +42,12 @@
 			</div>
 			<div class="content">
 				<p>Dear <%= employeeName %>,</p>
-				<p>Great news! The book you reserved, "<strong><%= message %></strong>", is now available for pickup.</p>
+				<p>Bad news! <strong><%= message %></strong> on <strong".</p>
 				<p>
 					Please visit the library at your earliest convenience to check out the book. Remember, we'll hold the book for
 					you for the next 3 days.
 				</p>
+				<br><br><br>
 				<p>We hope you enjoy your read!</p>
 			</div>
 			<div class="footer">

@@ -3,6 +3,6 @@ import controllersNotif from "../controllers/notification.controllers";
 
 const routerNotif = Router()
 
-routerNotif.post("/",controllersNotif.employeeNotif)
+routerNotif.post("/",controllersNotif.presence_absenceNotif)
 
 export default routerNotif

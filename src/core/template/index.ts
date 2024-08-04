@@ -15,11 +15,12 @@ const EmailTemplate = {
       return "";
     }
   },
-  employeeAbsence: async (employeeName: string,message : string) => {
+  employeeAbsence: async (employeeName: string,message : string,date:Date) => {
     try {
       const html = await ejs.renderFile(path.join(__dirname, "absence.ejs"), {
         employeeName,
-        message
+        message,
+        date
       });
       return html;
     } catch (error) {

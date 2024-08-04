@@ -6,7 +6,8 @@ import sendMail from "../core/config/send.mail";
 import EmailTemplate from "../core/template";
 
 const controllersNotif = {
-    employeeNotif : async (req:Request,res:Response)=>{
+    //notification concerning employee presence/absence
+    presence_absenceNotif : async (req:Request,res:Response)=>{
         try {
             const {employeeID} = req.body
             //first retrieving first employee to be able to use its name for email(not present)
@@ -47,8 +48,8 @@ const controllersNotif = {
                 sendMail(employee.email,"Exercice2-Employee Management",await EmailTemplate.employeePresence(employee.name,attendance_msg))
                 return res.status(HttpCode.OK).json({msg:`${employee.name} is present`})
             }else if(absence && !attendance){
-                const absence_msg = "you are absent young man" 
-                sendMail(employee.email,"Exercice2-Employee Management",await EmailTemplate.employeeAbsence(employee.name,absence_msg))
+                const absence_msg = "you were absent" 
+                sendMail(employee.email,"Exercice2-Employee Management",await EmailTemplate.employeeAbsence(employee.name,absence_msg,absence.date))
                 return res.status(HttpCode.OK).json({msg:`${employee.name} is absent`})   
             }else if(!attendance && !absence){
                 return res.status(HttpCode.NOT_FOUND).json({msg:`${employee.name} go and mark your presence or you will be absent`})

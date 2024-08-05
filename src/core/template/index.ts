@@ -40,18 +40,6 @@ const EmailTemplate = {
       return "";
     }
   },
-  adminNotif: async (adminName: string,message: string) => {
-    try {
-      const html = await ejs.renderFile(path.join(__dirname, "admin.ejs"), {
-        adminName,
-        message
-      });
-      return html;
-    } catch (error) {
-      console.error("Error rendering Book Available template:", error);
-      return "";
-    }
-  },
 };
 
 export default EmailTemplate;

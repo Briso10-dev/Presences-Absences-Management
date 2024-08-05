@@ -64,9 +64,6 @@ model Notification {
   // A notification concerns one employee
   empNotifID     String         @db.ObjectId
   empNotif       Employee       @relation(fields: [empNotifID], references: [employeeID])
-  // A notification concerns the only direction there
-  adminNotifID   String         @db.ObjectId
-  adminNotif     Administration @relation(fields: [adminNotifID], references: [adminID])
 }
 
 // model report to actually having employee's info
@@ -79,16 +76,6 @@ model Report {
   //A report is on zero/many employees's absence
   absences    Absence[]
 }
-
-// model direction pour l'envoie du mail
-model Administration {
-  adminID      String         @id @default(auto()) @map("_id") @db.ObjectId
-  adminName    String
-  email String
-  // A Direction receives zero/many notifications
-  notification Notification[]
-}
-
 // enum list
 enum Periodicity {
   weekly

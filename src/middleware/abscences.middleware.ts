@@ -10,7 +10,8 @@ export const absenceMiddleware = {
     calculateAbsHours: async (req: Request, res: Response, next: NextFunction) => {
         try {
 
-            const { emplyeeID, date } = req.body
+            const { id} = req.params
+            const {date} = req.body
 
             const absence = await prisma.absence.findFirst({
                 select: {
@@ -18,7 +19,7 @@ export const absenceMiddleware = {
                     date: true,
                 },
                 where: {
-                    empAbsenceID: emplyeeID,
+                    empAbsenceID: id,
                     date
                 }
             })
@@ -49,13 +50,15 @@ export const absenceMiddleware = {
     },
     adjustSalary:async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const { employeeID } = req.body;
+            const { id } = req.params;
+            const {email} = req.body
+
             const date = new Date();
             let newSalary;
     
             const employee = await prisma.employee.findFirst({ 
                 where: { 
-                    employeeID 
+                    email 
                 } 
             });
             if (!employee) {
@@ -64,7 +67,7 @@ export const absenceMiddleware = {
     
             const attendance = await prisma.presence.findFirst({
                 where: { 
-                    empPresenceID: employeeID 
+                    empPresenceID: id
                 }
             });
             if (!attendance) {
@@ -103,7 +106,7 @@ export const absenceMiddleware = {
             // Update employee's salary
             await prisma.employee.update({
                 where: { 
-                    employeeID 
+                    employeeID : id
                 },
                 data: { 
                     salary: newSalary 

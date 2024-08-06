@@ -6,7 +6,7 @@ import sendError from "../core/constants/errors";
 export const absenceControllers = {
     getAbscences : async (req:Request,res:Response)=>{
         try {
-            const {empAbsenceID} = req.body //from body to maintain consistency with middleware
+            const {id} = req.params //from body to maintain consistency with middleware
             const absenceHours = await prisma.absence.findFirst({
                 select:{
                     absenceID : true,
@@ -14,7 +14,7 @@ export const absenceControllers = {
                     absenceHour:true
                 },
                 where:{
-                    empAbsenceID //actually using employeeID in absence model
+                    empAbsenceID : id //actually using employeeID in absence model
                 },  
             })
             if(!absenceHours)
@@ -26,7 +26,9 @@ export const absenceControllers = {
     },
     getSalaryAdjustment :async (req: Request, res: Response) => {
         try {
-            const { employeeID } = req.body;
+            const { id } = req.params;
+            const {email} = req.body
+
             const employee = await prisma.employee.findUnique({
                 select: {
                     name: true,
@@ -34,12 +36,13 @@ export const absenceControllers = {
                     salary: true
                 },
                 where: { 
-                    employeeID 
+                    employeeID : id,
+                    email
                 }
             });
     
             if (!employee) {
-                return res.status(HttpCode.NOT_FOUND).json({ msg: "No employee found" });
+                return res.status(HttpCode.NOT_FOUND).json({ msg: "No employee found or wrong email entered" });
             }
     
             res.status(HttpCode.OK).json({

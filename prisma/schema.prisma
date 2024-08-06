@@ -20,7 +20,7 @@ model Employee {
   name         String
   email        String         @unique
   password     String
-  poste        String
+  post         String
   salary       Int
   // An employee can have zero/many presence
   presence     Presence[]
@@ -40,8 +40,8 @@ model Presence {
   empPresenceID String    @db.ObjectId
   empPresence   Employee  @relation(fields: [empPresenceID], references: [employeeID])
   //An employee's presence is concern with just one report(after a period gets another one)
-  repPresenceID String    @db.ObjectId
-  repPresence   Report    @relation(fields: [repPresenceID], references: [reportID])
+  repPresenceID String?   @db.ObjectId
+  repPresence   Report?   @relation(fields: [repPresenceID], references: [reportID])
 }
 
 // abscences table
@@ -53,17 +53,17 @@ model Absence {
   empAbsenceID String   @db.ObjectId
   empAbsence   Employee @relation(fields: [empAbsenceID], references: [employeeID])
   //An employee's absence is concern with just one report(after a period gets another one)
-  repAbsenceID String   @db.ObjectId
-  repAbsence   Report   @relation(fields: [repAbsenceID], references: [reportID])
+  repAbsenceID String?  @db.ObjectId
+  repAbsence   Report?  @relation(fields: [repAbsenceID], references: [reportID])
 }
 
 // notifications table
 model Notification {
-  notificationID String         @id @default(auto()) @map("_id") @db.ObjectId
+  notificationID String   @id @default(auto()) @map("_id") @db.ObjectId
   message        String
   // A notification concerns one employee
-  empNotifID     String         @db.ObjectId
-  empNotif       Employee       @relation(fields: [empNotifID], references: [employeeID])
+  empNotifID     String   @db.ObjectId
+  empNotif       Employee @relation(fields: [empNotifID], references: [employeeID])
 }
 
 // model report to actually having employee's info
@@ -76,6 +76,7 @@ model Report {
   //A report is on zero/many employees's absence
   absences    Absence[]
 }
+
 // enum list
 enum Periodicity {
   weekly

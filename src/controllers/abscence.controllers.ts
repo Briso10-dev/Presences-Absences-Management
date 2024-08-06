@@ -7,17 +7,16 @@ export const absenceControllers = {
     getAbscences : async (req:Request,res:Response)=>{
         try {
             const {empAbsenceID} = req.body //from body to maintain consistency with middleware
-
-            const absenceHours = await prisma.absence.groupBy({
+            const absenceHours = await prisma.absence.findFirst({
+                select:{
+                    absenceID : true,
+                    date : true,
+                    absenceHour:true
+                },
                 where:{
                     empAbsenceID //actually using employeeID in absence model
-                },
-              by: ['empAbsenceID'],
-              _count:{
-                absenceHour:true
-              }  
+                },  
             })
-            console.log(absenceHours)
             if(!absenceHours)
                 return res.status(HttpCode.NOT_FOUND).json({msg:"You are not in the absence list"})
             return res.status(HttpCode.OK).json(absenceHours) 
@@ -25,24 +24,32 @@ export const absenceControllers = {
             sendError(res,error)
         }
     },
-    getsalaryAdjustment: async (req:Request,res:Response)=>{
+    getSalaryAdjustment :async (req: Request, res: Response) => {
         try {
-            const {id} = req.params
-            //retrieving absenceHour of the employee
-            const absence = await prisma.absence.findFirst({
-                select:{
-                    absenceHour : true,
-                    date : true
+            const { employeeID } = req.body;
+            const employee = await prisma.employee.findUnique({
+                select: {
+                    name: true,
+                    post: true,
+                    salary: true
                 },
-                where:{
-                    empAbsenceID : id
+                where: { 
+                    employeeID 
                 }
-            })
-            if(!absence)
-                return res.status(HttpCode.OK).json({msg:"no salary adjustment"})
-            res.status(HttpCode.OK).json({msg:"You had a salary adjustment"})
+            });
+    
+            if (!employee) {
+                return res.status(HttpCode.NOT_FOUND).json({ msg: "No employee found" });
+            }
+    
+            res.status(HttpCode.OK).json({
+                msg: "Salary adjustment applied",
+                employee: {
+                    ...employee, //props to retake employee property
+                }
+            });
         } catch (error) {
-            sendError(res,error)
+            sendError(res, error);
         }
     }
 }

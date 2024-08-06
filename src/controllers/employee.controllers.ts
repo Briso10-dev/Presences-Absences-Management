@@ -16,7 +16,7 @@ export const employeeControllers = {
             return res.status(HttpCode.UNPROCESSABLE_ENTITY).json({ errors: errors.array() });
 
         try {
-            const { name, email, password, poste, salary } = req.body
+            const { name, email, password, post, salary } = req.body
             const passHash = await bcrypt.hash(password, 10) //hashing password
 
             const employee = await prisma.employee.create({
@@ -24,7 +24,7 @@ export const employeeControllers = {
                     name,
                     email,
                     password: passHash,
-                    poste,
+                    post,
                     salary
                 }
             })
@@ -118,7 +118,7 @@ export const employeeControllers = {
     updateEmployee: async (req: Request, res: Response) => {
         try {
             const { id } = req.params //obtaining a user's id
-            const { name, email, password,poste,salary } = req.body //obtaining modified users's info
+            const { name, email, password,post,salary } = req.body //obtaining modified users's info
 
             const passHash = await bcrypt.hash(password, 10)
 
@@ -130,7 +130,7 @@ export const employeeControllers = {
                     name,
                     email,
                     password: passHash,
-                    poste,
+                    post,
                     salary
                 }
             })

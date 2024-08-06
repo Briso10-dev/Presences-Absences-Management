@@ -6,18 +6,17 @@ import sendError from "../core/constants/errors";
 export const absenceControllers = {
     getAbscences : async (req:Request,res:Response)=>{
         try {
-            const {empAbsenceID} = req.body //from body to maintain consistency with middleware
-
-            const absenceHours = await prisma.absence.groupBy({
-                where:{
-                    empAbsenceID //actually using employeeID in absence model
+            const {id} = req.params //from body to maintain consistency with middleware
+            const absenceHours = await prisma.absence.findFirst({
+                select:{
+                    absenceID : true,
+                    date : true,
+                    absenceHour:true
                 },
-              by: ['empAbsenceID'],
-              _count:{
-                absenceHour:true
-              }  
+                where:{
+                    empAbsenceID : id //actually using employeeID in absence model
+                },  
             })
-            console.log(absenceHours)
             if(!absenceHours)
                 return res.status(HttpCode.NOT_FOUND).json({msg:"You are not in the absence list"})
             return res.status(HttpCode.OK).json(absenceHours) 
@@ -25,24 +24,35 @@ export const absenceControllers = {
             sendError(res,error)
         }
     },
-    getsalaryAdjustment: async (req:Request,res:Response)=>{
+    getSalaryAdjustment :async (req: Request, res: Response) => {
         try {
-            const {id} = req.params
-            //retrieving absenceHour of the employee
-            const absence = await prisma.absence.findFirst({
-                select:{
-                    absenceHour : true,
-                    date : true
+            const { id } = req.params;
+            const {email} = req.body
+
+            const employee = await prisma.employee.findUnique({
+                select: {
+                    name: true,
+                    post: true,
+                    salary: true
                 },
-                where:{
-                    empAbsenceID : id
+                where: { 
+                    employeeID : id,
+                    email
                 }
-            })
-            if(!absence)
-                return res.status(HttpCode.OK).json({msg:"no salary adjustment"})
-            res.status(HttpCode.OK).json({msg:"You had a salary adjustment"})
+            });
+    
+            if (!employee) {
+                return res.status(HttpCode.NOT_FOUND).json({ msg: "No employee found or wrong email entered" });
+            }
+    
+            res.status(HttpCode.OK).json({
+                msg: "Salary adjustment applied",
+                employee: {
+                    ...employee, //props to retake employee property
+                }
+            });
         } catch (error) {
-            sendError(res,error)
+            sendError(res, error);
         }
     }
 }

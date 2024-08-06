@@ -6,7 +6,7 @@ export const employeeValidator = [
   body('email', 'Invalid email').isEmail(),
   body('password', 'password does not Empty').not().isEmpty(),
   body('password', 'The minimum password length is 6 characters').isLength({min: 6}),
-  body('poste', 'poste does not Empty').not().isEmpty(),
+  body('post', 'poste does not Empty').not().isEmpty(),
   body('salary',  'salary does not Empty').not().isEmpty(),
 ]
 // verifying non-empy starting hour
